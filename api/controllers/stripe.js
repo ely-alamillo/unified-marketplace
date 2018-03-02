@@ -23,12 +23,17 @@ const createAccount = (req, res) => {
     'stripe_user[business_name]': user.businessName || undefined
   });
   // Redirect to Stripe to start the Connect onboarding.
-  res.redirect(
-    // 'https://connect.stripe.com/express/oauth/authorize' +
-    //   '?' +
-    //   querystring.stringify(parameters)
-    'https://connect.stripe.com/express/oauth/authorize?client_id=ca_CPnVNqJ6MzKkU0f8rqkxGz44HjAIBxdx&state=asdfgeh'
-  );
+  // res.redirect(
+  //   'https://connect.stripe.com/express/oauth/authorize' +
+  //     '?' +
+  //     querystring.stringify(parameters)
+  // );
+  res.json({
+    uri:
+      'https://connect.stripe.com/express/oauth/authorize' +
+      '?' +
+      querystring.stringify(parameters)
+  });
 };
 
 module.exports = { createAccount };
