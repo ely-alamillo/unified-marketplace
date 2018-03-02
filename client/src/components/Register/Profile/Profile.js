@@ -44,9 +44,7 @@ const Profile = props => {
         value={props.city}
         style={{ marginRight: '5px' }}
         placeholder="Beverly Hills"
-        onChange={event =>
-          props.self.setState({ postCode: event.target.value })
-        }
+        onChange={event => props.self.setState({ city: event.target.value })}
       />
       <label className="mb-0 text-muted">Country</label>
       {/* <input
@@ -57,7 +55,13 @@ const Profile = props => {
         placeholder="US"
         onChange={event => props.self.setState({ country: event.target.value })}
       /> */}
-      <select className="form-control">
+      <select
+        className="form-control"
+        onChange={event => {
+          console.log('event', event.target.value);
+          props.self.setState({ country: event.target.value });
+        }}
+      >
         <option>United States</option>
       </select>
       <small className="form-text text-muted">
