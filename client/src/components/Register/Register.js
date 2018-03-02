@@ -56,6 +56,7 @@ class Register extends Component {
       .post('http://localhost:8080/api/stripe-register', user)
       .then(data => {
         console.log('data: ', data.data);
+        window.location = data.data.uri;
       })
       .catch(err => [console.log('error on create account ', err)]);
   };
