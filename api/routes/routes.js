@@ -1,5 +1,6 @@
 const express = require('express');
 const fundraiser = require('../controllers/fundraiser');
+const stripe = require('../controllers/stripe');
 
 const routes = server => {
   const api = express.Router();
@@ -8,6 +9,15 @@ const routes = server => {
    */
   api.route('/register').post(fundraiser.register);
 
+  /**
+   * Stripe Create Account Route
+   */
+  api.route('/stripe-register').post(stripe.createAccount);
+
+  /**
+   * tells our server to have routes
+   * under '/api'
+   */
   server.use('/api', api);
 };
 
