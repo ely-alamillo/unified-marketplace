@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const path = require('path');
+const { routes } = require('./api/routes/routes');
 const server = express();
 
 mongoose.Promise = global.Promise;
@@ -25,6 +26,9 @@ server.use(bodyParser.json());
 
 // cors options to allow access from other endpoints
 server.use(cors(corsOptions));
+
+// wires up routes
+routes(server);
 
 server.listen(process.env.PORT || 8080, err => {
   if (err) console.log('Error Starting the server');
