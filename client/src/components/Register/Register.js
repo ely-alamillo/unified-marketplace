@@ -13,7 +13,8 @@ class Register extends Component {
     lastname: '',
     postCode: '',
     city: '',
-    country: '',
+    country: 'United States',
+    StripeDisabled: true,
     error: {
       message: ''
     }
@@ -22,28 +23,29 @@ class Register extends Component {
   signUp = () => {
     console.log('this.state', this.state);
     const { email, password } = this.state;
-    firebaseApp
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(user => {
-        console.log('this is the user:', user);
-        axios
-          .post('http://localhost:4000/api/register', { username: user.email })
-          .then(element => {
-            console.log('element: ', element.data);
-          })
-          .catch(err => {
-            console.log('error saving user: ', err);
-          });
-        this.setState({
-          email: '',
-          password: ''
-        });
-        this.props.history.push('/listen');
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
+    // firebaseApp
+    //   .auth()
+    //   .createUserWithEmailAndPassword(email, password)
+    //   .then(user => {
+    //     console.log('this is the user:', user);
+    //     axios
+    //       .post('http://localhost:4000/api/register', { username: user.email })
+    //       .then(element => {
+    //         console.log('element: ', element.data);
+    //       })
+    //       .catch(err => {
+    //         console.log('error saving user: ', err);
+    //       });
+    //     this.setState({
+    //       email: '',
+    //       password: ''
+    //     });
+    //     this.props.history.push('/listen');
+    //   })
+    //   .catch(error => {
+    //     this.setState({ error });
+    //   });
+    this.setState({ disabled: false });
   };
 
   render() {
@@ -65,7 +67,7 @@ class Register extends Component {
           firstname={this.state.firstname}
           lastname={this.state.lastname}
           postCode={this.state.postCode}
-          city={this.state.postCode}
+          city={this.state.city}
           country={this.state.country}
         />
         <hr />
@@ -76,7 +78,7 @@ class Register extends Component {
         >
           Create Account
         </button>
-        <Payment />
+        <Payment disabled={this.state.disabled} />
       </div>
     );
   }
