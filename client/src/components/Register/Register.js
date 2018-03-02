@@ -28,11 +28,36 @@ class Register extends Component {
       .post('http://localhost:8080/api/register', user)
       .then(data => {
         console.log('data: ', data);
-        this.setState({ StripeDisabled: false, registerSuccess: true });
+        // this.setState({
+        //   StripeDisabled: false,
+        //   registerSuccess: true,
+        //   email: '',
+        //   password: '',
+        //   firstname: '',
+        //   lastname: '',
+        //   city: '',
+        //   postCode: ''
+        // });
+        this.setState({
+          StripeDisabled: false,
+          registerSuccess: true
+        });
       })
       .catch(err => {
         console.log('err: ', err);
       });
+  };
+
+  createAccount = () => {
+    const { email, firstname, lastname } = this.state;
+    const user = { email, firstname, lastname };
+    console.log('user:', user);
+    axios
+      .post('http://localhost:8080/api/stripe-register', user)
+      .then(data => {
+        console.log('data: ', data.data);
+      })
+      .catch(err => [console.log('error on create account ', err)]);
   };
 
   render() {
@@ -65,11 +90,18 @@ class Register extends Component {
         >
           Create Account
         </button>
-        <Payment disabled={this.state.StripeDisabled} />
+        <Payment
+          disabled={this.state.StripeDisabled}
+          createAccount={this.createAccount}
+        />
         <small className="form-text text-muted">
-          {this.state.registerSuccess
-            ? 'Account created, please register with Stripe now.'
-            : 'After account has been created please set up account with stripe.'}
+          {this.state.registerSuccess ? (
+            <p className="text-success">
+              Account created, please register with Stripe now.
+            </p>
+          ) : (
+            'After account has been created please set up account with stripe.'
+          )}
         </small>
       </div>
     );
