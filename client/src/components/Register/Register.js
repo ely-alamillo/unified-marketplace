@@ -15,37 +15,24 @@ class Register extends Component {
     city: '',
     country: 'United States',
     StripeDisabled: true,
+    registerSuccess: false,
     error: {
       message: ''
     }
   };
 
   signUp = () => {
-    console.log('this.state', this.state);
-    const { email, password } = this.state;
-    // firebaseApp
-    //   .auth()
-    //   .createUserWithEmailAndPassword(email, password)
-    //   .then(user => {
-    //     console.log('this is the user:', user);
-    //     axios
-    //       .post('http://localhost:4000/api/register', { username: user.email })
-    //       .then(element => {
-    //         console.log('element: ', element.data);
-    //       })
-    //       .catch(err => {
-    //         console.log('error saving user: ', err);
-    //       });
-    //     this.setState({
-    //       email: '',
-    //       password: ''
-    //     });
-    //     this.props.history.push('/listen');
-    //   })
-    //   .catch(error => {
-    //     this.setState({ error });
-    //   });
-    this.setState({ disabled: false });
+    const { email, password, firstname, lastname } = this.state;
+    const user = { email, password, firstname, lastname };
+    axios
+      .post('http://localhost:8080/api/register', user)
+      .then(data => {
+        console.log('data: ', data);
+        this.setState({ StripeDisabled: false, registerSuccess: true });
+      })
+      .catch(err => {
+        console.log('err: ', err);
+      });
   };
 
   render() {
@@ -78,7 +65,12 @@ class Register extends Component {
         >
           Create Account
         </button>
-        <Payment disabled={this.state.disabled} />
+        <Payment disabled={this.state.StripeDisabled} />
+        <small className="form-text text-muted">
+          {this.state.registerSuccess
+            ? 'Account created, please register with Stripe now.'
+            : 'After account has been created please set up account with stripe.'}
+        </small>
       </div>
     );
   }
