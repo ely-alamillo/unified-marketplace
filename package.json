@@ -9,13 +9,19 @@
   "author": "Ely Alamillo",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.2",
+    "connect": "^3.6.6",
+    "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-beta.3",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "firebase": "^4.10.1",
     "mongoose": "^5.0.7",
     "nodemon": "^1.17.1",
-    "querystring": "^0.2.0"
+    "querystring": "^0.2.0",
+    "session-memory-store": "^0.2.2"
   }
 }
