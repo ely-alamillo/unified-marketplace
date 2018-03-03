@@ -27,7 +27,7 @@ class Register extends Component {
     axios
       .post('http://localhost:8080/api/register', user)
       .then(data => {
-        console.log('data: ', data);
+        console.log('data: ', data.data);
         // this.setState({
         //   StripeDisabled: false,
         //   registerSuccess: true,
@@ -40,7 +40,8 @@ class Register extends Component {
         // });
         this.setState({
           StripeDisabled: false,
-          registerSuccess: true
+          registerSuccess: true,
+          userID: data.data.id
         });
       })
       .catch(err => {
@@ -49,8 +50,8 @@ class Register extends Component {
   };
 
   createAccount = () => {
-    const { email, firstname, lastname } = this.state;
-    const user = { email, firstname, lastname };
+    const { email, firstname, lastname, userID } = this.state;
+    const user = { email, firstname, lastname, userID };
     console.log('user:', user);
     axios
       .post('http://localhost:8080/api/stripe-register', user)
