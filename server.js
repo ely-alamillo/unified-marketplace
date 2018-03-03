@@ -4,8 +4,20 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const path = require('path');
+const session = require('express-session');
+const MemoryStore = require('session-memory-store')(session);
 const { routes } = require('./api/routes/routes');
 const server = express();
+
+// enable session
+server.use(
+  session({
+    secret: 'thisIsTheSecretForNow',
+    resave: true,
+    saveUninitialized: true,
+    store: new MemoryStore()
+  })
+);
 
 mongoose.Promise = global.Promise;
 
