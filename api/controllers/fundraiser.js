@@ -28,6 +28,10 @@ const register = (req, res) => {
         email,
         uid: user.uid
       });
+      db.ref('currentUID/secret').set({
+        uid: user.uid
+      });
+      console.log('session: ', req.session);
       res.json({ id: user.uid, email: user.email, success: true });
     })
     .catch(err => {
