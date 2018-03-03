@@ -15,6 +15,11 @@ const routes = server => {
   api.route('/stripe-register').post(stripe.createAccount);
 
   /**
+   * Stripe Connect account
+   */
+  api.route('/token').get(stripe.connectAccount);
+
+  /**
    * tells our server to have routes
    * under '/api'
    */
