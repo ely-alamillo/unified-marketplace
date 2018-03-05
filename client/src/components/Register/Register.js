@@ -38,6 +38,7 @@ class Register extends Component {
         //   city: '',
         //   postCode: ''
         // });
+        window.localStorage.setItem('uid', data.data.id)
         this.setState({
           StripeDisabled: false,
           registerSuccess: true,
