@@ -14,7 +14,7 @@ firebase.initializeApp(config);
 const db = firebase.database();
 
 const register = (req, res) => {
-  const { firstname, lastname, email, password } = req.body;
+  const { firstname, lastname, email, password, fundraiser } = req.body;
   if (!firstname || !lastname || !email || !password) {
     return sendUserError('Please provide all information', res);
   }
@@ -26,11 +26,23 @@ const register = (req, res) => {
         firstname,
         lastname,
         email,
+        uid: user.uid,
+        fundraisers: { owner: user.uid, name: fundraiser, total: 0 }
+      });
+      db.ref('currentUID/secret/').set({
         uid: user.uid
       });
-      db.ref('currentUID/secret').set({
-        uid: user.uid
-      });
+      const newFund = {};
+      const fundKey = db
+        .ref('fundraisers/')
+        .child('fundraisers')
+        .push().key;
+      newFund['fundraisers/' + fundKey] = {
+        owner: user.uid,
+        name: fundraiser,
+        total: 0
+      };
+      db.ref().update(newFund);
       res.json({ id: user.uid, email: user.email, success: true });
     })
     .catch(err => {
@@ -38,6 +50,20 @@ const register = (req, res) => {
     });
 };
 
+const showUserFundraisers = (req, res) => {
+  const { uid } = req.body;
+  console.log('uid: ', uid);
+  db
+    .ref('users/' + uid)
+    .once('value')
+    .then(snapshot => {
+      res.json({ success: true, data: snapshot.val() });
+    })
+    .catch(err => {
+      sendUserError('Error Fetching Fundraisers', res);
+    });
+};
 module.exports = {
-  register
+  register,
+  showUserFundraisers
 };
