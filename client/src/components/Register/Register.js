@@ -11,6 +11,7 @@ class Register extends Component {
     password: '',
     firstname: '',
     lastname: '',
+    fundraiser: '',
     postCode: '',
     city: '',
     country: 'United States',
@@ -22,8 +23,8 @@ class Register extends Component {
   };
 
   signUp = () => {
-    const { email, password, firstname, lastname } = this.state;
-    const user = { email, password, firstname, lastname };
+    const { email, password, firstname, lastname, fundraiser } = this.state;
+    const user = { email, password, firstname, lastname, fundraiser };
     axios
       .post('http://localhost:8080/api/register', user)
       .then(data => {
@@ -38,7 +39,7 @@ class Register extends Component {
         //   city: '',
         //   postCode: ''
         // });
-        window.localStorage.setItem('uid', data.data.id)
+        window.localStorage.setItem('uid', data.data.id);
         this.setState({
           StripeDisabled: false,
           registerSuccess: true,
@@ -74,6 +75,7 @@ class Register extends Component {
           signUp={this.signUp}
           password={this.state.password}
           email={this.state.email}
+          fundraiser={this.state.fundraiser}
           error={this.state.error}
         />
         <hr />
