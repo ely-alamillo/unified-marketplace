@@ -19,6 +19,7 @@ const routes = server => {
    */
   api.route('/token').get(stripe.connectAccount);
 
+  api.route('/test').get(stripe.test);
   /**
    * tells our server to have routes
    * under '/api'
