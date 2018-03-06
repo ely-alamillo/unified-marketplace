@@ -1,12 +1,38 @@
 import React, { Component } from 'react';
 import Fundaraisers from './Fundraisers/Fundraisers';
-const Dashboard = props => {
-  console.log(props.match.params);
-  return (
-    <div>
-      <h1>This is the Dashboard </h1>
-      <Fundaraisers />
-    </div>
-  );
-};
+import axios from 'axios';
+
+class Dashboard extends Component {
+  state = {
+    fundraisers: null
+  };
+  componentDidMount() {
+    this.getFundraisers();
+  }
+
+  getFundraisers = () => {
+    const uid = window.localStorage.getItem('uid');
+    axios
+      .post('http://localhost:8080/api/getuserfundraisers', { uid })
+      .then(data => {
+        const { name, owner, total } = data.data.data.fundraisers;
+        const fundraisers = [{ name, owner, total }];
+        console.log(fundraisers);
+        this.setState({ fundraisers });
+      })
+      .catch(err => {
+        console.log('getFundraisers error', err);
+      });
+  };
+
+  render() {
+    console.log('params: ', this.props.match.params);
+    return (
+      <div>
+        <h1>This is the Dashboard </h1>
+        <Fundaraisers fundraisers={this.state.fundraisers} />
+      </div>
+    );
+  }
+}
 export default Dashboard;
