@@ -29,6 +29,16 @@ const Account = props => {
         <small className="form-text text-muted">
           Must be 6 characters or longer.
         </small>
+        <label className="mb-0 text-muted text-muted">Fundraiser Name</label>
+        <input
+          className="form-control"
+          type="text"
+          value={props.fundraiser}
+          style={{ marginRight: '5px' }}
+          onChange={event =>
+            props.self.setState({ fundraiser: event.target.value })
+          }
+        />
       </div>
       <div>{props.error.message}</div>
     </div>
