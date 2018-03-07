@@ -8,9 +8,18 @@ const Fundraisers = props => {
       ) : (
         props.fundraisers.map(fundraiser => {
           return (
-            <div>
-              <h1>name: {fundraiser.name}</h1>
-              <h3>owner: {fundraiser.owner}</h3>
+            <div className="card" style={{ width: '18 rem' }}>
+              {/* <img className="card-img-top" src="..." alt="Card image cap" /> */}
+              <div className="card-body">
+                <h5 className="card-title">{fundraiser.name}</h5>
+                <h6 className="card-subtitle mb-2 text-muted">
+                  {fundraiser.owner}
+                </h6>
+                <p className="card-text">Some description of the fundraiser.</p>
+                <a href="#" className="btn btn-primary">
+                  Cash out
+                </a>
+              </div>
             </div>
           );
         })
