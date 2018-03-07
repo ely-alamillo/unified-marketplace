@@ -63,7 +63,27 @@ const showUserFundraisers = (req, res) => {
       sendUserError('Error Fetching Fundraisers', res);
     });
 };
+
+const showAllFundraisers = (req, res) => {
+  db
+    .ref('fundraisers/')
+    .once('value')
+    .then(snapshot => {
+      const data = turnToArr(snapshot.val());
+      res.json({ success: true, data });
+    })
+    .catch(err => {
+      sendUserError('Error fetching all fundraisers', res);
+    });
+};
+
+const turnToArr = data => {
+  const values = Object.values(data);
+  return values;
+};
+
 module.exports = {
   register,
-  showUserFundraisers
+  showUserFundraisers,
+  showAllFundraisers
 };
