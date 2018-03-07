@@ -20,7 +20,7 @@ const HomePage = props => {
         </LinkContainer>
       </div>
       <div>
-        <LinkContainer to="/campaigns">
+        <LinkContainer to="/donate">
           <button className="btn btn-primary btn-lg mb-3">
             Donate to a Campaign
           </button>
