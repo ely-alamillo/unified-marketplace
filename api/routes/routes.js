@@ -25,6 +25,11 @@ const routes = server => {
   api.route('/getuserfundraisers').post(fundraiser.showUserFundraisers);
 
   /**
+   * Shows all fundraisers
+   */
+  api.route('/getallfundraisers').get(fundraiser.showAllFundraisers);
+
+  /**
    * tells our server to have routes
    * under '/api'
    */
