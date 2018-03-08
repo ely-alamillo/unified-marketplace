@@ -3,7 +3,6 @@ import Account from './Account/Account';
 import Profile from './Profile/Profile';
 import Payment from './Payment/Payment';
 import axios from 'axios';
-import { firebaseApp } from '../../Firebase';
 
 class Register extends Component {
   state = {
@@ -28,21 +27,16 @@ class Register extends Component {
     axios
       .post('http://localhost:8080/api/register', user)
       .then(data => {
-        console.log('data: ', data.data);
-        // this.setState({
-        //   StripeDisabled: false,
-        //   registerSuccess: true,
-        //   email: '',
-        //   password: '',
-        //   firstname: '',
-        //   lastname: '',
-        //   city: '',
-        //   postCode: ''
-        // });
         window.localStorage.setItem('uid', data.data.id);
         this.setState({
           StripeDisabled: false,
           registerSuccess: true,
+          email: '',
+          password: '',
+          firstname: '',
+          lastname: '',
+          city: '',
+          postCode: '',
           userID: data.data.id
         });
       })
@@ -58,7 +52,6 @@ class Register extends Component {
     axios
       .post('http://localhost:8080/api/stripe-register', user)
       .then(data => {
-        console.log('data: ', data.data);
         window.location = data.data.uri;
       })
       .catch(err => [console.log('error on create account ', err)]);
