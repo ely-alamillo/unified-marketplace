@@ -2,6 +2,7 @@ const { sendUserError } = require('../helpers');
 const firebase = require('firebase');
 const axios = require('axios');
 const querystring = require('querystring');
+const stripe = require('stripe')('sk_test_QSuOZ8Dn5wvjxbtPtyxMTsCS');
 
 const db = firebase.database();
 
@@ -72,21 +73,61 @@ const connectAccount = (req, res) => {
       console.log(error);
       res.json({ err: err, from: 'error in connecting account to stripe' });
     });
+};
 
-  // if (uid === 'ERORR') {
-  //   res.json({ error: 'could not get uid' });
-  // } else {
-  //   axios
-  //     .post('https://connect.stripe.com/oauth/token', data)
-  //     .then(data => {
-  //       const stripe_user_id = data.data.stripe_user_id;
-  //       setUserStripeId(uid, stripe_user_id);
-  //       res.redirect('http://localhost:3000/#/yeetboy');
-  //     })
-  //     .catch(err => {
-  //       res.json({ err: err, from: 'error in connecting account to stripe' });
-  //     });
-  // }
+const createCharge = (req, res) => {
+  console.log('checkout starting...');
+  const { token, owners, amount } = req.body;
+  if (!token || !owners || !amount)
+    return sendUserError('Donation Failed, please try again');
+
+  const destinations = getUsersStripeAcct(owners);
+  const fees = chargeFee(amount);
+  destinations
+    .then(allUsers => {
+      // creates charge for x amount
+      stripe.charges
+        .create({
+          amount: fees.initalTotal,
+          currency: 'usd',
+          description: 'Example charge',
+          source: 'tok_visa',
+          transfer_group: token
+        })
+        .then(charge => {
+          // Create a Transfer to the connected account (later):
+          stripe.transfers
+            .create({
+              amount: fees.half,
+              currency: 'usd',
+              destination: 'acct_1C2koFHQhacaYWQ7',
+              transfer_group: token
+            })
+            .then(function(transfer) {
+              // asynchronously called
+              console.log('first Transfer');
+              stripe.transfers
+                .create({
+                  amount: fees.half,
+                  currency: 'usd',
+                  destination: 'acct_1C2kNtDWFjwenLY2',
+                  transfer_group: token
+                })
+                .then(function(secondTransfer) {
+                  // asynchronously called
+                  console.log('Second Transfer: ');
+                  res.json({ success: true });
+                });
+            });
+        })
+        .catch(err => {
+          console.log('charge not sucessful');
+          console.log(err);
+        });
+    })
+    .catch(err => {
+      sendUserError('Could not complete donation', res);
+    });
 };
 
 const getUID = () => {
@@ -102,19 +143,6 @@ const getUID = () => {
         reject({ msg: 'failed to get uid' });
       });
   });
-
-  // })
-  let uid = '';
-  db
-    .ref('currentUID/secret')
-    .once('value')
-    .then(snapshot => {
-      uid = snapshot.val().uid;
-    })
-    .catch(err => {
-      uid = 'ERORR';
-    });
-  return uid;
 };
 
 const setUserStripeId = (uid, stripe_user_id) => {
@@ -125,22 +153,50 @@ const setUserStripeId = (uid, stripe_user_id) => {
     .update({ stripe_user_id });
 };
 
-const test = (req, res) => {
-  let uid = '';
-  db
-    .ref('currentUID/secret')
-    .once('value')
-    .then(snapshot => {
-      uid = snapshot.val().uid;
-      console.log('uid inside getUID: ', uid);
-      console.log('snapshot.value().uid: ', snapshot.val().uid);
-      res.json({ success: true });
-    })
-    .catch(error => {
-      console.log('error:', error);
-      res.json({ err: true });
-    });
-  // return uid;
+const getUsersStripeAcct = owners => {
+  const stripeAccts = [];
+  return new Promise((resolve, reject) => {
+    db
+      .ref('users')
+      .once('value')
+      .then(snapshot => {
+        const data = snapshot.val();
+        owners.forEach(owner => {
+          if (data.hasOwnProperty(owner)) {
+            console.log('curr owner: ', owner);
+            stripeAccts.push(data[owner].stripe_user_id);
+          } else {
+            reject({ msg: 'could not get all user accts' });
+          }
+        });
+        resolve({ data: stripeAccts });
+      })
+      .catch(err => {
+        reject({ msg: 'failed to get accounts' });
+      });
+  });
 };
 
-module.exports = { createAccount, connectAccount, test };
+const chargeFee = amount => {
+  const initalTotal = Math.floor(parseInt(amount, 10)) * 100;
+  const fee = initalTotal * 0.05;
+  const total = initalTotal - fee;
+  const half = Math.floor(total / 2);
+  return { fee, total, half, initalTotal };
+};
+
+const test = (req, res) => {
+  db
+    .ref('users')
+    .once('value')
+    .then(snapshot => {
+      console.log('snapshot: ', snapshot.val());
+      // resolve(snapshot.val());
+      res.json({ success: true, data: snapshot.val() });
+    })
+    .catch(err => {
+      res.json({ success: false });
+    });
+};
+
+module.exports = { createAccount, connectAccount, createCharge, test };
