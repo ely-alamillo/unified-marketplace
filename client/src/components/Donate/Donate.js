@@ -15,7 +15,7 @@ class Donate extends Component {
 
   getAllFundraisers = () => {
     axios
-      .get('http://localhost:8080/api/getallfundraisers')
+      .get('https://fundraising-ely.herokuapp.com/api/getallfundraisers')
       .then(data => {
         this.setState({ fundraisers: data.data.data });
       })

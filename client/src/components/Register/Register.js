@@ -25,7 +25,7 @@ class Register extends Component {
     const { email, password, firstname, lastname, fundraiser } = this.state;
     const user = { email, password, firstname, lastname, fundraiser };
     axios
-      .post('http://localhost:8080/api/register', user)
+      .post('https://fundraising-ely.herokuapp.com/api/register', user)
       .then(data => {
         window.localStorage.setItem('uid', data.data.id);
         this.setState({
@@ -48,9 +48,8 @@ class Register extends Component {
   createAccount = () => {
     const { email, firstname, lastname, userID } = this.state;
     const user = { email, firstname, lastname, userID };
-    console.log('user:', user);
     axios
-      .post('http://localhost:8080/api/stripe-register', user)
+      .post('https://fundraising-ely.herokuapp.com/api/stripe-register', user)
       .then(data => {
         window.location = data.data.uri;
       })

@@ -22,7 +22,7 @@ class Cart extends Component {
       this.state.donations[1].owner
     ];
     axios
-      .post('http://localhost:8080/api/donate', {
+      .post('https://fundraising-ely.herokuapp.com/api/donate', {
         token: token.id,
         owners,
         amount: this.state.currValue
@@ -30,12 +30,12 @@ class Cart extends Component {
       .then(res => {
         this.setState({ processing: false });
 
-        window.location = 'http://localhost:8080/#/success';
+        window.location = 'https://fundraising-ely.herokuapp.com/#/success';
       })
       .catch(err => {
         this.setState({ processing: false });
 
-        window.location = 'http://localhost:8080/#/failed';
+        window.location = 'https://fundraising-ely.herokuapp.com/#/failed';
       });
   };
 

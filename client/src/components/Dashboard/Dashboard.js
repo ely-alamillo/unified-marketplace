@@ -13,7 +13,9 @@ class Dashboard extends Component {
   getFundraisers = () => {
     const uid = window.localStorage.getItem('uid');
     axios
-      .post('http://localhost:8080/api/getuserfundraisers', { uid })
+      .post('https://fundraising-ely.herokuapp.com/api/getuserfundraisers', {
+        uid
+      })
       .then(data => {
         const { name, owner, total } = data.data.data.fundraisers;
         const fundraisers = [{ name, owner, total }];

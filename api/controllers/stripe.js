@@ -34,11 +34,6 @@ const createAccount = (req, res) => {
     'stripe_user[business_name]': user.businessName || undefined
   });
   // Redirect to Stripe to start the Connect onboarding.
-  // res.redirect(
-  //   'https://connect.stripe.com/express/oauth/authorize' +
-  //     '?' +
-  //     querystring.stringify(parameters)
-  // );
   res.json({
     uri:
       'https://connect.stripe.com/express/oauth/authorize' +
@@ -61,7 +56,9 @@ const connectAccount = (req, res) => {
         .then(data => {
           const stripe_user_id = data.data.stripe_user_id;
           setUserStripeId(user.uid, stripe_user_id);
-          res.redirect(`http://localhost:8080/#/dashboard/${user.uid}`);
+          res.redirect(
+            `https://fundraising-ely.herokuapp.com/#/dashboard/${user.uid}`
+          );
         })
         .catch(err => {
           res.json({ err: err, from: 'error in connecting account to stripe' });
