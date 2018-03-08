@@ -1,6 +1,8 @@
 import React from 'react';
+import StripePay from '../StripePay/StripePay';
 
 const Fundraisers = props => {
+  console.log('fundraisers: ', props);
   return (
     <div>
       {props.fundraisers === null ? (
@@ -16,9 +18,14 @@ const Fundraisers = props => {
                   {fundraiser.owner}
                 </h6>
                 <p className="card-text">Some description of the fundraiser.</p>
-                <a href="#" className="btn btn-primary">
-                  Donate
-                </a>
+                {/* <StripePay onToken={props.onToken} self={props.self} /> */}
+                <button
+                  className="btn btn-primary"
+                  value={JSON.stringify(fundraiser)}
+                  onClick={props.addToCart}
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
           );
