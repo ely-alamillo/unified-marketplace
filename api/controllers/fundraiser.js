@@ -52,7 +52,6 @@ const register = (req, res) => {
 
 const showUserFundraisers = (req, res) => {
   const { uid } = req.body;
-  console.log('uid: ', uid);
   db
     .ref('users/' + uid)
     .once('value')

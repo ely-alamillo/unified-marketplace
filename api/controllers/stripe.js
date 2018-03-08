@@ -54,8 +54,6 @@ const connectAccount = (req, res) => {
   const client_id = 'ca_CPnVNqJ6MzKkU0f8rqkxGz44HjAIBxdx';
   const client_secret = 'sk_test_QSuOZ8Dn5wvjxbtPtyxMTsCS';
   const data = { code, client_id, client_secret, grant_type };
-  // const uid = await getUID();
-  // console.log('UID from connectAccount: ', uid);
   getUID()
     .then(user => {
       axios
@@ -70,13 +68,11 @@ const connectAccount = (req, res) => {
         });
     })
     .catch(err => {
-      console.log(error);
       res.json({ err: err, from: 'error in connecting account to stripe' });
     });
 };
 
 const createCharge = (req, res) => {
-  console.log('checkout starting...');
   const { token, owners, amount } = req.body;
   if (!token || !owners || !amount)
     return sendUserError('Donation Failed, please try again');
@@ -105,7 +101,6 @@ const createCharge = (req, res) => {
             })
             .then(function(transfer) {
               // asynchronously called
-              console.log('first Transfer');
               stripe.transfers
                 .create({
                   amount: fees.half,
@@ -115,14 +110,12 @@ const createCharge = (req, res) => {
                 })
                 .then(function(secondTransfer) {
                   // asynchronously called
-                  console.log('Second Transfer: ');
                   res.json({ success: true });
                 });
             });
         })
         .catch(err => {
-          console.log('charge not sucessful');
-          console.log(err);
+          sendUserError('Failed Transfering', res);
         });
     })
     .catch(err => {
@@ -146,7 +139,6 @@ const getUID = () => {
 };
 
 const setUserStripeId = (uid, stripe_user_id) => {
-  console.log('UID: ', uid);
   return db
     .ref()
     .child('users/' + uid)
@@ -163,7 +155,6 @@ const getUsersStripeAcct = owners => {
         const data = snapshot.val();
         owners.forEach(owner => {
           if (data.hasOwnProperty(owner)) {
-            console.log('curr owner: ', owner);
             stripeAccts.push(data[owner].stripe_user_id);
           } else {
             reject({ msg: 'could not get all user accts' });
@@ -190,7 +181,6 @@ const test = (req, res) => {
     .ref('users')
     .once('value')
     .then(snapshot => {
-      console.log('snapshot: ', snapshot.val());
       // resolve(snapshot.val());
       res.json({ success: true, data: snapshot.val() });
     })

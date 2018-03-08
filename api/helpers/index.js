@@ -1,5 +1,5 @@
 const sendUserError = (err, res) => {
-  res.status(SERVER_USER_ERROR);
+  res.status(422);
   if (typeof err === 'string') {
     res.json({ err });
     return;
