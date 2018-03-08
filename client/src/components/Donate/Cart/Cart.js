@@ -85,6 +85,8 @@ class Cart extends Component {
           self={this}
           disabled={this.state.disabled}
         />
+        <script src="https://js.stripe.com/v3/" />
+        <div id="payment-request-button"> Hello</div>
       </div>
     );
   }
