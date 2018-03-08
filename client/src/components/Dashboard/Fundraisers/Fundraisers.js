@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const Fundraisers = props => {
   return (
@@ -8,7 +8,11 @@ const Fundraisers = props => {
       ) : (
         props.fundraisers.map(fundraiser => {
           return (
-            <div className="card" style={{ width: '18 rem' }}>
+            <div
+              className="card"
+              style={{ width: '18 rem' }}
+              key={fundraiser.name}
+            >
               {/* <img className="card-img-top" src="..." alt="Card image cap" /> */}
               <div className="card-body">
                 <h5 className="card-title">{fundraiser.name}</h5>
@@ -16,7 +20,7 @@ const Fundraisers = props => {
                   {fundraiser.owner}
                 </h6>
                 <p className="card-text">Some description of the fundraiser.</p>
-                <a href="#" className="btn btn-primary">
+                <a href="/cashout" className="btn btn-primary disabled">
                   Cash out
                 </a>
               </div>
