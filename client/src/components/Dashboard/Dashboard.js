@@ -17,7 +17,6 @@ class Dashboard extends Component {
       .then(data => {
         const { name, owner, total } = data.data.data.fundraisers;
         const fundraisers = [{ name, owner, total }];
-        console.log(fundraisers);
         this.setState({ fundraisers });
       })
       .catch(err => {
@@ -26,7 +25,6 @@ class Dashboard extends Component {
   };
 
   render() {
-    console.log('params: ', this.props.match.params);
     return (
       <div>
         <h1>This is the Dashboard </h1>

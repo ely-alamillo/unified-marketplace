@@ -61,7 +61,7 @@ const connectAccount = (req, res) => {
         .then(data => {
           const stripe_user_id = data.data.stripe_user_id;
           setUserStripeId(user.uid, stripe_user_id);
-          res.redirect(`http://localhost:3000/#/dashboard/${user.uid}`);
+          res.redirect(`http://localhost:8080/#/dashboard/${user.uid}`);
         })
         .catch(err => {
           res.json({ err: err, from: 'error in connecting account to stripe' });

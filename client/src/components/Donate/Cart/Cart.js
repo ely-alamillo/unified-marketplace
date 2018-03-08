@@ -30,12 +30,12 @@ class Cart extends Component {
       .then(res => {
         this.setState({ processing: false });
 
-        window.location = 'http://localhost:3000/#/success';
+        window.location = 'http://localhost:8080/#/success';
       })
       .catch(err => {
         this.setState({ processing: false });
 
-        window.location = 'http://localhost:3000/#/failed';
+        window.location = 'http://localhost:8080/#/failed';
       });
   };
 
