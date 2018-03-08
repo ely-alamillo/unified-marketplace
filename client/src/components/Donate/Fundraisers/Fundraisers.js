@@ -1,8 +1,6 @@
 import React from 'react';
-import StripePay from '../StripePay/StripePay';
 
 const Fundraisers = props => {
-  console.log('fundraisers: ', props);
   return (
     <div>
       {props.fundraisers === null ? (
@@ -10,7 +8,11 @@ const Fundraisers = props => {
       ) : (
         props.fundraisers.map(fundraiser => {
           return (
-            <div className="card mb-3" style={{ width: '18 rem' }}>
+            <div
+              className="card mb-3"
+              style={{ width: '18 rem' }}
+              key={Math.random()}
+            >
               {/* <img className="card-img-top" src="..." alt="Card image cap" /> */}
               <div className="card-body">
                 <h5 className="card-title">{fundraiser.name}</h5>
@@ -18,7 +20,6 @@ const Fundraisers = props => {
                   {fundraiser.owner}
                 </h6>
                 <p className="card-text">Some description of the fundraiser.</p>
-                {/* <StripePay onToken={props.onToken} self={props.self} /> */}
                 <button
                   className="btn btn-primary"
                   value={JSON.stringify(fundraiser)}

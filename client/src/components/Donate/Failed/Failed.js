@@ -1,10 +1,10 @@
 import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const Success = props => {
+const Failed = props => {
   return (
     <div>
-      <h1 className="text-success">Thank you for Donating!</h1>
+      <h1 className="text-danger">Donation Failed please try again</h1>
       <LinkContainer to="/donate">
         <button className="btn btn-primary btn-lg mb-3">
           Go back to fundraisers
@@ -14,4 +14,4 @@ const Success = props => {
   );
 };
 
-export default Success;
+export default Failed;

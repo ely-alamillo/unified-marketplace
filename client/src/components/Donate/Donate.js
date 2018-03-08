@@ -17,7 +17,6 @@ class Donate extends Component {
     axios
       .get('http://localhost:8080/api/getallfundraisers')
       .then(data => {
-        console.log(data.data.data);
         this.setState({ fundraisers: data.data.data });
       })
       .catch(err => {
@@ -29,23 +28,10 @@ class Donate extends Component {
   };
 
   addToCart = event => {
-    console.log('adding to cart: ', JSON.parse(event.target.value));
     const cart = [...this.state.cart];
     cart.push(JSON.parse(event.target.value));
     this.setState({ cart });
   };
-
-  // onToken = token => {
-  //   console.log('token: ', token);
-  //   axios
-  //     .post('http://localhost:8080/api/donate', { token: token.id })
-  //     .then(res => {
-  //       console.log('res: ', res);
-  //     })
-  //     .catch(err => {
-  //       console.log('ther was an error', err);
-  //     });
-  // };
 
   render() {
     return (

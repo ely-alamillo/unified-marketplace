@@ -6,7 +6,8 @@ class Cart extends Component {
   state = {
     donations: [],
     currValue: '',
-    disabled: true
+    disabled: true,
+    processing: false
   };
 
   componentDidMount() {
@@ -15,12 +16,11 @@ class Cart extends Component {
   }
 
   onToken = token => {
+    this.setState({ processing: true });
     const owners = [
       this.state.donations[0].owner,
       this.state.donations[1].owner
     ];
-    console.log('owners: ', owners);
-    console.log('token: ', token);
     axios
       .post('http://localhost:8080/api/donate', {
         token: token.id,
@@ -28,16 +28,15 @@ class Cart extends Component {
         amount: this.state.currValue
       })
       .then(res => {
-        console.log('res: ', res);
+        this.setState({ processing: false });
+
+        window.location = 'http://localhost:3000/#/success';
       })
       .catch(err => {
-        console.log('ther was an error', err);
-      });
-  };
+        this.setState({ processing: false });
 
-  changeValue = value => {
-    console.log('val: ', value);
-    this.setState({ currValue: value });
+        window.location = 'http://localhost:3000/#/failed';
+      });
   };
 
   render() {
@@ -48,7 +47,7 @@ class Cart extends Component {
           {this.state.donations.length > 0 ? (
             this.state.donations.map(donate => {
               return (
-                <div className="card-body">
+                <div className="card-body" key={Math.random()}>
                   <h5 className="card-title">{donate.name}</h5>
                   <h6 className="card-subtitle mb-2 text-muted">
                     {donate.owner}
@@ -56,7 +55,6 @@ class Cart extends Component {
                   <p className="card-text">
                     Some description of the fundraiser.
                   </p>
-                  {/* <StripePay onToken={props.onToken} self={props.self} /> */}
                 </div>
               );
             })
@@ -85,8 +83,9 @@ class Cart extends Component {
           self={this}
           disabled={this.state.disabled}
         />
-        <script src="https://js.stripe.com/v3/" />
-        <div id="payment-request-button"> Hello</div>
+        {this.state.processing === false ? null : (
+          <h1>Processing payment...</h1>
+        )}
       </div>
     );
   }
