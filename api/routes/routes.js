@@ -30,6 +30,13 @@ const routes = server => {
   api.route('/getallfundraisers').get(fundraiser.showAllFundraisers);
 
   /**
+   *
+   * charges donation
+   */
+  api.route('/donate').post(stripe.createCharge);
+
+  api.route('/test').get(stripe.test);
+  /**
    * tells our server to have routes
    * under '/api'
    */
