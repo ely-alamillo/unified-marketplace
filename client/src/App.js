@@ -4,6 +4,7 @@ import HomePage from './components/HomePage/HomePage';
 import Register from './components/Register/Register';
 import Dashboard from './components/Dashboard/Dashboard';
 import Donate from './components/Donate/Donate';
+import Cart from './components/Donate/Cart/Cart';
 import './App.css';
 
 class App extends Component {
@@ -14,6 +15,7 @@ class App extends Component {
           <Route path="/" exact component={HomePage} />
           <Route path="/start" exact component={Register} />
           <Route path="/donate" exact component={Donate} />
+          <Route path="/cart/:donations" exact component={Cart} />
           <Route path="/dashboard/:uid" exact component={Dashboard} />
         </div>
       </div>
