@@ -20,7 +20,7 @@ const createAccount = (req, res) => {
     .update({ state });
 
   // Prepare the mandatory Stripe parameters.
-  let parameters = {
+  const parameters = {
     client_id: 'ca_CPnVNqJ6MzKkU0f8rqkxGz44HjAIBxdx',
     state
   };

@@ -46,3 +46,5 @@ server.listen(process.env.PORT || 8080, err => {
   if (err) console.log('Error Starting the server');
   console.log(`server listening on port ${process.env.PORT || 8080}`);
 });
+
+module.exports = { server };

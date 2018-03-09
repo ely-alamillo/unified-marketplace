@@ -1,7 +1,7 @@
 const firebase = require('firebase');
 const { sendUserError } = require('../helpers');
 
-var config = {
+const config = {
   apiKey: 'AIzaSyCBd6XeDnulYm48tGI9_YIyCQ8hkhsDPvc',
   authDomain: 'fundraising-2e7d0.firebaseapp.com',
   databaseURL: 'https://fundraising-2e7d0.firebaseio.com',
